@@ -3,6 +3,7 @@ import express, { Request, Response } from "express";
 import { body } from "express-validator";
 import { validateRequest } from "../../middleware/validateRequest";
 import { Data } from "../../types/data";
+import { Elenco } from "../../types/elenco";
 import { Filme, SubFilme } from "../../types/filme";
 import { Genero } from "../../types/genero";
 import { Produtora } from "../../types/produtora";
@@ -20,7 +21,7 @@ router.get(
 	],
 	(req: Request, res: Response) => {
 		const { id } = req.body;
-		const path = `movie/${id}?append_to_response=videos,reviews,similar,recommendations,release_dates`;
+		const path = `movie/${id}?append_to_response=videos,reviews,similar,recommendations,release_dates,credits`;
 		const url = getFullUrl(path);
 
 		axios
@@ -58,11 +59,7 @@ router.get(
 					tagline: data.tagline,
 					status: data.status,
 					trailers: data.videos.results
-						.filter(
-							(item: any) =>
-								item.type === "Trailer" &&
-								(item.iso_639_1 === "en" || item.iso_639_1 === "pt")
-						)
+						.filter((item: any) => item.type === "Trailer")
 						.map((item: any): Trailer => {
 							const { id, iso_639_1, name, key, site, official } = item;
 							return {
@@ -124,6 +121,14 @@ router.get(
 									certificacao: item.certification,
 								};
 							}),
+						};
+					}),
+					elenco: data.credits.cast.map((item: any): Elenco => {
+						return {
+							id: item.id,
+							nome: item.name,
+							personagem: item.character,
+							foto_url: getFullImageUrl(item.profile_path),
 						};
 					}),
 				};

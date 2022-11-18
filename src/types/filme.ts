@@ -1,4 +1,5 @@
 import { Data } from "./data";
+import { Elenco } from "./elenco";
 import { Genero } from "./genero";
 import { Produtora } from "./produtora";
 import { Review } from "./review";
@@ -43,6 +44,7 @@ type Filme = {
 		itens: SubFilme[];
 	};
 	datas?: Data[];
+	elenco: Elenco[];
 };
 
 export { Filme, SubFilme };
