@@ -1,5 +1,5 @@
 type Review = {
-	id: number;
+	id: number | string;
 	autor: string;
 	avatar_url: string | null;
 	rating: number;
