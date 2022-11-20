@@ -39,7 +39,7 @@ router.get(
 			})
 			.catch((error) => {
 				console.error(error);
-				res.status(error.data.status).send({ message: "Ocorreu um erro!" });
+				res.status(400).send({ message: error });
 			});
 	}
 );
